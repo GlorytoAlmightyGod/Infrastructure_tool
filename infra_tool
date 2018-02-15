@@ -1,0 +1,45 @@
+#!/bin/bash
+
+input0="top_files_number"
+while IFS= read -r var
+do
+    TOP_FILES=$var
+done < "$input0"
+
+# Granting permissions to execute
+chmod +x drive_check
+chmod +x rearrange
+
+echo "Please Wait! Scanning all the Drives..."
+echo
+
+# Extracting $TOP_FILES largest files from the current system & mounted drives
+./drive_check
+
+echo "DONE"
+echo
+echo "Top $TOP_FILES files with Maximum Size:"
+echo
+
+# Display $TOP_FILES largest files
+g++ fast.cpp -o fast
+./fast
+
+echo
+echo "Please Wait! Rearranging the Desktop to Documents..."
+
+# Clean the Desktop and arrange corresponding items in Documents
+./rearrange
+
+echo "DONE"
+echo
+echo "Cleaning Cache..."
+
+# Delete the cache generated
+rm -rf windows_max
+rm -rf linux_max
+rm -rf drives_max
+rm -rf all_drives
+rm -rf fast
+
+echo "DONE"

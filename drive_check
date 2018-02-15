@@ -1,0 +1,38 @@
+#!/bin/bash
+
+input0="top_files_number"
+while IFS= read -r var
+do
+    TOP_FILES=$var
+done < "$input0"
+
+# Scan files associated with any non-root user.
+find /home/$USER -type f -exec du -Sh {} + | sort -rh | head -n $TOP_FILES > linux_max
+
+echo
+echo "Linux  Found!"
+
+ls /media/$USER > all_drives
+input="all_drives"
+while IFS= read -r var
+do
+    echo $var " Found!"
+    # Assuming only 1 Windows drive is present and/or 1 Linux drive
+    if   [ -d "/media/$USER/$var/Users" ] # Windows is present
+    then
+        # Find $TOP_FILES largest files in Users in Windows partition
+        WINDOWS=$var
+        find /media/$USER/$var/Users -type f -exec du -Sh {} + | sort -rh | head -n $TOP_FILES  > windows_max
+    fi
+done < "$input"
+
+PASSED="windows_max"
+
+if [ -f "${PASSED}" ] # Windows is present
+then 
+    # Exclude windows partition and find $TOP_FILES largest files in other drives
+    find /media/$USER -path "/media/$USER/$WINDOWS" -prune -o -type f  -exec du -Sh {} + | sort -rh | head -n $TOP_FILES > drives_max
+
+else find /media/$USER -type f  -exec du -Sh {} + | sort -rh | head -n $TOP_FILES > drives_max # Windows is absent 
+    # Find $TOP_FILES largest files among all the drives    
+fi

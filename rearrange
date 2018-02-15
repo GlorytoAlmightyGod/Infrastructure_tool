@@ -1,0 +1,18 @@
+#!/bin/bash
+
+input="formats"
+
+matches_exist () {
+  [ $# -gt 1 ] || [ -e "$1" ]
+}
+
+while IFS= read -r var
+do
+    if matches_exist /home/$USER/Desktop/*.$var;
+    then
+        mkdir /home/$USER/Documents/$var
+        cp /home/$USER/Desktop/*.$var /home/$USER/Documents/$var
+        rm -rf /home/$USER/Desktop/*.$var
+    fi
+done < "$input"
+
