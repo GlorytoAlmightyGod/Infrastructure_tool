@@ -13,4 +13,5 @@ Functions/Features
 
 How to Use?
   - Navigate to the folder where you copied the files. Grant permissions to the file named '**infra_tool**' for execution as a script by running "**chmod +x infra_tool**".
+  - Run ./infra_tool from the folder where you copied above files.
   - Wait and Watch in the terminal window.
