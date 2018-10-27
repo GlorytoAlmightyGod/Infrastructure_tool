@@ -133,12 +133,13 @@ int main()
             }
         }
     }
-    
-    for(i=0;i<TOP_FILES;i++)
+    j=1;
+    for(i=0;i<3*TOP_FILES;i++)
     {
-        if(solution[i]!="")
+        if(solution[i]!="" && j<=10)
         {
-            cout<<i+1<<") "<<solution[i]<<endl;
+            cout<<j<<") "<<solution[i]<<endl;
+            j++;
         }
     }
     
